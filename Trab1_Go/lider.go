@@ -1,56 +1,7 @@
 package main
 
 import "math"
-/*
-Calcula a soma da distância euclidiana e os pontos que formam cada grupo
 
-entrada - distância máxima e o a slice de pontos 
-
-saida - soma euclidana e os grupos 
-
-*A primeira posição de cada grupo será seu número
-*/
-
-func algoritmoLider(dist float64, pontos [][]float64) (float64, [][]int) {
-
-	// Criando grupos 
-	var grupos [][]int 
-	var grupo0 []int 
-
-	// inicia grupos 
-	grupo0 = append(grupo0, 1)
-	grupos = append(grupos, grupo0)
-
-	// Percorrer todos os pontos
-	for i := 1; i < len(pontos); i++ {
-		lider := true
-
-		// checando se o ponto atual é um lider
-		for j := 0; j < len(grupos); j++ {
-			if distanciaEntrePontos(pontos[grupos[j][0] - 1], pontos[i]) <= dist {
-				//caso tenha uma distancia menor q a dada como entrada em relação
-				// a um outro ponto q ja seja lider o novo ponto será colocado em um 
-				//grupo ja criado 
-				grupos[j] = append(grupos[j], i+1)
-				lider = false
-				break
-			}
-		}
-
-		//Criando um novo grupo para um novo lider 
-		if lider {
-			var grupo []int
-			grupo = append(grupo, i+1)
-			grupos = append(grupos, grupo)
-		}
-
-	}
-
-	sse := calcSSE(pontos, grupos)
-
-	return sse, grupos
-
-}
 
 /*
 Cacula distancia entre dois pontos 
@@ -119,4 +70,56 @@ func calcSSE(pontos [][]float64, grupos [][]int ) float64 {
 	}
 
 	return SSE
+}
+
+
+/*
+Calcula a soma da distância euclidiana e os pontos que formam cada grupo
+
+entrada - distância máxima e o a slice de pontos 
+
+saida - soma euclidana e os grupos 
+
+*A primeira posição de cada grupo será seu número
+*/
+
+func algoritmoLider(dist float64, pontos [][]float64) (float64, [][]int) {
+
+	// Criando grupos 
+	var grupos [][]int 
+	var grupo0 []int 
+
+	// inicia grupos 
+	grupo0 = append(grupo0, 1)
+	grupos = append(grupos, grupo0)
+
+	// Percorrer todos os pontos
+	for i := 1; i < len(pontos); i++ {
+		lider := true
+
+		// checando se o ponto atual é um lider
+		for j := 0; j < len(grupos); j++ {
+			if distanciaEntrePontos(pontos[grupos[j][0] - 1], pontos[i]) <= dist {
+				//caso tenha uma distancia menor q a dada como entrada em relação
+				// a um outro ponto q ja seja lider o novo ponto será colocado em um 
+				//grupo ja criado 
+				grupos[j] = append(grupos[j], i+1)
+				lider = false
+				break
+			}
+		}
+
+		//Criando um novo grupo para um novo lider 
+		if lider {
+			var grupo []int
+			grupo = append(grupo, i+1)
+			grupos = append(grupos, grupo)
+		}
+
+	}
+
+	sse := calcSSE(pontos, grupos)
+
+	return sse, grupos
+
 }

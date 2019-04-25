@@ -10,50 +10,6 @@ import (
 )
 
 /*
-	Analise dos dados extraidos dos arquivos dados como entrada 
-
-	Com a distancia máxima dada como entrada o algoritmo forma grupos
-
-	Entrada - Arquivos a serem analisados 
-	saida - Distância e os Grupos 
-*/
-
-func arqAnalise(arqD, arqP string) ([][]float64, float64) {
-
-	// Abrindo os arquivos para analise
-	arqPontos, ERRO := os.Open(arqP) // Abre arquivo 
-	
-	if ERRO != nil{
-		print("A leitura deu errado nas coordenadas.")
-		os.Exit(3)
-	}
-
-	arqDist, ERRO := os.Open(arqD) // Abre arquivo 
-	
-	if ERRO != nil{
-		print("A leitura deu errado na distancia.")
-		os.Exit(3)
-	}
-
-	// Pegar valor da distancia 
-	var dist float64
-	fmt.Fscanf(arqDist, "%f", &dist)
-	//fmt.Println(dist)
-	// Pegando os pontos(linhas) e a quantidade de pontos(quantidade de linhas)
-	linhas, quantLinhas := pegaLinhas(arqPontos)
-	//fmt.Print(linhas)
-	
-	// Convertendo as linhas em pontos
-	pontos := retornaPontos(linhas, quantLinhas)
-	//fmt.Print(pontos)
-
-	arqPontos.Close()
-	arqDist.Close()
-	return pontos, dist
-}
-
-
-/*
 Pega um arquivo e retorna suas linhas e a quantidade de linhas 
 
 entrada: O arquivo que deve ser lido 
@@ -125,7 +81,7 @@ func saida(SSE float64, grupos [][]int) {
 		for j := 0; j < len(grupos[i]); j++ {
 			stringGrupos += strconv.Itoa(grupos[i][j]) + " "
 		}
-		stringGrupos+="\n"
+		stringGrupos+="\n\n"
 	}
 
 	ERRO = ioutil.WriteFile("saida.txt", []byte(stringGrupos), 0666) // escreve os grupos num arquivo
@@ -136,4 +92,48 @@ func saida(SSE float64, grupos [][]int) {
 	}
 
 
+}
+
+
+/*
+	Analise dos dados extraidos dos arquivos dados como entrada 
+
+	Com a distancia máxima dada como entrada o algoritmo forma grupos
+
+	Entrada - Arquivos a serem analisados 
+	saida - Distância e os Grupos 
+*/
+
+func arqAnalise(arqD, arqP string) ([][]float64, float64) {
+
+	// Abrindo os arquivos para analise
+	arqPontos, ERRO := os.Open(arqP) // Abre arquivo 
+	
+	if ERRO != nil{
+		print("A leitura deu errado nas coordenadas.")
+		os.Exit(3)
+	}
+
+	arqDist, ERRO := os.Open(arqD) // Abre arquivo 
+	
+	if ERRO != nil{
+		print("A leitura deu errado na distancia.")
+		os.Exit(3)
+	}
+
+	// Pegar valor da distancia 
+	var dist float64
+	fmt.Fscanf(arqDist, "%f", &dist)
+	//fmt.Println(dist)
+	// Pegando os pontos(linhas) e a quantidade de pontos(quantidade de linhas)
+	linhas, quantLinhas := pegaLinhas(arqPontos)
+	//fmt.Print(linhas)
+	
+	// Convertendo as linhas em pontos
+	pontos := retornaPontos(linhas, quantLinhas)
+	//fmt.Print(pontos)
+
+	arqPontos.Close()
+	arqDist.Close()
+	return pontos, dist
 }
